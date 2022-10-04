@@ -1,0 +1,15 @@
+# NTP Config = Managed by Ansible
+
+driftfile /var/lib/ntp/drift
+restrict default nomodify notrap nopeer noquery
+restrict 127.0.0.1
+restrict ::1
+
+server {{ ntp_server1 }}
+server {{ ntp_server2 }}
+server {{ ntp_server3 }}
+server {{ ntp_server4 }}
+
+includefile /etc/ntp/crypto/pw
+keys /etc/ntp/keys
+disable monitor

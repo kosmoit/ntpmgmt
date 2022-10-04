@@ -1,0 +1,29 @@
+---
+- hosts: all
+  become_user: root
+
+  vars:
+    ntp_server1: 0.north-america.pool.ntp.org
+    ntp_server2: 1.north-america.pool.ntp.org
+    ntp_server3: 2.north-america.pool.ntp.org
+    ntp_server4: 3.north-america.pool.ntp.org
+
+  tasks:
+    - name:  install ntp client if not present
+      yum:
+        name=ntp
+        state=present
+    - name:  deploy ntp config file to machine.
+      template:
+        src=ntp.j2
+        dest=/etc/ntp.conf
+        owner=root
+        group=root
+        mode=0644
+        backup=yes
+
+    - name: ensure ntpd is restarted and enabled
+      service:
+        name=ntpd
+        state=restarted
+        enabled=yes
